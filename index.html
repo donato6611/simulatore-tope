@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Simulatore tope italiano: chi paga, quanto conviene</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap">
+<style>
+:root{
+  --bg:#FFFFFF; --ink:#141413; --muted:#4A4A4A; --line:#D9D9D9;
+  --blue:#1F4E79; --blue-soft:#E8F0F8; --amber:#9C6500; --amber-soft:#FFF4DC;
+  --bad:#B00020; --bad-soft:#FDE7E9; --good:#1E6B3A; --good-soft:#E3F3E8;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){ color-scheme:dark; --bg:#121417; --ink:#F2F2F2; --muted:#B8B8B8; --line:#3A3F46;
+    --blue:#8FB8E6; --blue-soft:#1C2A3A; --amber:#F0C06A; --amber-soft:#3A2E12; --bad:#FF8A95; --bad-soft:#3E1A1F; --good:#7FD29A; --good-soft:#163A24; }
+}
+:root[data-theme="dark"]{ color-scheme:dark; --bg:#121417; --ink:#F2F2F2; --muted:#B8B8B8; --line:#3A3F46;
+    --blue:#8FB8E6; --blue-soft:#1C2A3A; --amber:#F0C06A; --amber-soft:#3A2E12; --bad:#FF8A95; --bad-soft:#3E1A1F; --good:#7FD29A; --good-soft:#163A24; }
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,Arial,Helvetica,sans-serif;line-height:1.45}
+main{max-width:1040px;margin:0 auto;padding:28px 20px 60px}
+h1{font-size:clamp(26px,4vw,40px);line-height:1.1;margin:0 0 8px;font-weight:800}
+.lead{color:var(--muted);font-size:17px;margin:0 0 24px;max-width:70ch}
+h2{font-size:20px;margin:28px 0 12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+label{display:block;font-size:14px;color:var(--muted);margin-bottom:4px}
+.field{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--bg)}
+.field input[type=number],.field select{width:100%;font:inherit;font-size:17px;border:0;background:transparent;color:var(--ink);padding:2px 0}
+.field input[type=range]{width:100%;margin-top:6px;accent-color:var(--blue)}
+.val{font-weight:600}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.card{border-radius:12px;padding:14px 16px;background:var(--blue-soft)}
+.card .big{font-size:30px;font-weight:800;color:var(--blue);line-height:1.1}
+.card .lbl{font-size:14px;color:var(--muted);margin-top:4px}
+.card.amber{background:var(--amber-soft)} .card.amber .big{color:var(--amber)}
+.verdict{border-radius:12px;padding:14px 16px;font-weight:600;margin-top:12px}
+.ok{background:var(--good-soft);color:var(--good)} .ko{background:var(--bad-soft);color:var(--bad)}
+.note{font-size:14px;color:var(--muted)}
+.chartbox{overflow-x:auto;border:1px solid var(--line);border-radius:12px;padding:8px}
+svg{display:block;max-width:100%;height:auto}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+.tblbox{overflow-x:auto}
+footer{margin-top:36px;font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px}
+button{font:inherit;font-size:14px;padding:8px 12px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+</style>
+</head>
+<body>
+<main>
+<h1>Simulatore tope italiano: chi paga, quanto conviene</h1>
+<p class="lead">Modello semplificato del tetto al gas per la generazione elettrica con rimborso alle centrali finanziato da chi beneficia del ribasso. Cambia i parametri e guarda quando il meccanismo conviene davvero ai clienti esposti al prezzo di mercato.</p>
+
+<h2>Parametri di sistema</h2>
+<div class="grid">
+  <div class="field"><label for="pgas">Prezzo gas PSV (€/MWh termici)</label><input id="pgas" type="number" step="1" value="88"><input type="range" min="30" max="200" step="1" data-for="pgas" value="88"></div>
+  <div class="field"><label for="cap">Tetto convenzionale (€/MWh termici)</label><input id="cap" type="number" step="1" value="59"><input type="range" min="30" max="120" step="1" data-for="cap" value="59"></div>
+  <div class="field"><label for="eta">Rendimento di riferimento η</label><input id="eta" type="number" step="0.01" value="0.55"><input type="range" min="0.34" max="0.60" step="0.01" data-for="eta" value="0.55"></div>
+  <div class="field"><label for="k">Quota ore con gas marginale k</label><input id="k" type="number" step="0.05" value="0.85"><input type="range" min="0.3" max="1" step="0.05" data-for="k" value="0.85"></div>
+  <div class="field"><label for="gd">Peso del gas sulla domanda G/D (%)</label><input id="gd" type="number" step="1" value="41"><input type="range" min="10" max="70" step="1" data-for="gd" value="41"></div>
+  <div class="field"><label for="x">Quota di energia esente X (%)</label><input id="x" type="number" step="1" value="45"><input type="range" min="0" max="90" step="1" data-for="x" value="45"></div>
+  <div class="field"><label for="d">Domanda ripartibile D (MWh/h)</label><input id="d" type="number" step="500" value="34000"><input type="range" min="15000" max="50000" step="500" data-for="d" value="34000"></div>
+  <div class="field"><label for="s">Uscita mensile dalla quota esente (%)</label><input id="s" type="number" step="1" value="12"><input type="range" min="0" max="40" step="1" data-for="s" value="12"></div>
+</div>
+
+<h2>Risultati</h2>
+<div class="cards">
+  <div class="card"><div class="big" id="oDelta">–</div><div class="lbl">Δ: rimborso alle centrali per MWh elettrico (erogato dal GSE)</div></div>
+  <div class="card"><div class="big" id="oDP">–</div><div class="lbl">ΔP: calo atteso del prezzo di borsa e del PUN Index</div></div>
+  <div class="card amber"><div class="big" id="oCA">–</div><div class="lbl">CA: corrispettivo addebitato da Terna all’ingrosso su ogni MWh non esente</div></div>
+  <div class="card amber"><div class="big" id="oXmax">–</div><div class="lbl">Quota esente massima perché i clienti esposti ci guadagnino</div></div>
+</div>
+<div class="verdict" id="verdict">–</div>
+<p class="note">Formula: netto per MWh esposto = ΔP − CA = Δ·[k − (G/D)/(1−X)]. Il costo orario C = Δ×G è ripartito solo sull’energia non esente E = D×(1−X). Rendite di congestione e inversione dei flussi non sono modellate.</p>
+
+<h2>Traiettoria nei 12 mesi</h2>
+<p class="note">La quota esente scende ogni mese per scadenze e recessi (chi lascia un fisso ante-annuncio e ne firma uno nuovo entra nella base pagante): il CA cala e il netto cresce.</p>
+<div class="chartbox"><svg id="chart" viewBox="0 0 760 300" role="img" aria-label="Andamento mensile di CA e netto per MWh esposto"></svg></div>
+
+<h2>Il tuo contratto</h2>
+<div class="grid">
+  <div class="field"><label for="tipo">Tipologia</label><select id="tipo">
+    <option value="1">1 · Indicizzato al PUN Index GME</option>
+    <option value="2a">2 · Prezzo fisso firmato prima dell’annuncio, invariato</option>
+    <option value="2b">2-bis · Fisso ante-annuncio che recede e firma un nuovo fisso</option>
+    <option value="3">3 · Misto: 60% PUN Index, 40% fisso ante-annuncio</option>
+    <option value="4">4 · Gestione portafoglio: 40% PUN, 40% coperto ante, 20% coperto post</option>
+    <option value="5a">5 · PUN Index con derivato bancario ante-annuncio sul 60%, dichiarato</option>
+    <option value="5b">5 · Lo stesso, ma non dichiarato al Registro</option>
+    <option value="6">6 · PPA fisso ante-annuncio sul 50%, resto PUN Index</option>
+    <option value="7">7 · Combinazione: 30% PUN, 30% fisso ante, 20% fisso post, 20% PPA ante</option>
+    <option value="au">Tutela e vulnerabili (Acquirente Unico)</option>
+    <option value="gc">Grande consumatore su MGP, 30% futures ante-annuncio</option>
+  </select></div>
+  <div class="field"><label for="cons">Consumo mensile (MWh)</label><input id="cons" type="number" step="10" value="100"></div>
+</div>
+<div class="tblbox"><table>
+  <thead><tr><th>Voce</th><th class="num">Quota</th><th class="num">€ al mese</th></tr></thead>
+  <tbody>
+    <tr><td>Energia con beneficio di prezzo</td><td class="num" id="qBen">–</td><td class="num" id="eBen">–</td></tr>
+    <tr><td>Energia che paga il CA</td><td class="num" id="qPay">–</td><td class="num" id="ePay">–</td></tr>
+    <tr><td><strong>Netto per il cliente</strong></td><td class="num"></td><td class="num" id="eNet"><strong>–</strong></td></tr>
+  </tbody>
+</table></div>
+<p class="note" id="tipoNote"></p>
+
+<footer>
+Ipotesi: tetto 59 €/MWh per 18 mesi (accordo Italia-UE, ottobre 2026); gli acquisti su MGP sono al prezzo zonale e il PUN Index GME è l’indice dei contratti; il CA resta fuori dal PUN Index; esenti solo fissi, coperture, PPA e derivati stipulati prima dell’annuncio e rimasti invariati, più pompaggi e ausiliari. Valori indicativi, da sostituire con dati Terna e GME. Il modello completo è nel foglio Excel e nei due documenti (articolo 6 riformulato e bozza di delibera ARERA).
+<div style="margin-top:10px"><button id="reset">Ripristina i valori iniziali</button></div>
+</footer>
+</main>
+<script>
+(function(){
+  var ids=["pgas","cap","eta","k","gd","x","d","s"];
+  var defaults={pgas:88,cap:59,eta:0.55,k:0.85,gd:41,x:45,d:34000,s:12};
+  var $=function(id){return document.getElementById(id)};
+  var fmt=function(v,dec){return (Math.round(v*Math.pow(10,dec))/Math.pow(10,dec)).toLocaleString("it-IT",{minimumFractionDigits:dec,maximumFractionDigits:dec})};
+  var cases={
+    "1":{i:1,fa:0,fp:0,ppa:0,cop:0,dich:1,n:"Beneficia su tutto e paga il CA su tutto: il caso base."},
+    "2a":{i:0,fa:1,fp:0,ppa:0,cop:0,dich:1,n:"Nessun beneficio e nessun CA finché il contratto resta invariato: netto zero."},
+    "2b":{i:0,fa:0,fp:1,ppa:0,cop:0,dich:1,n:"Il nuovo prezzo fisso incorpora i futures ribassati: il cliente beneficia come un indicizzato e paga il CA, incluso nel nuovo prezzo."},
+    "3":{i:0.6,fa:0.4,fp:0,ppa:0,cop:0,dich:1,n:"La quota indicizzata beneficia e paga; la quota fissa ante-annuncio resta esente."},
+    "4":{i:0.4,fa:0.4,fp:0.2,ppa:0,cop:0,dich:1,n:"Esente solo la quota coperta prima dell’annuncio; le coperture successive pagano, perché negoziate a prezzi già ribassati."},
+    "5a":{i:1,fa:0,fp:0,ppa:0,cop:0.6,dich:1,n:"Il derivato, regolato sul PUN Index puro, rende meno quando l’indice scende: la quota coperta non beneficia e, se dichiarata, non paga."},
+    "5b":{i:1,fa:0,fp:0,ppa:0,cop:0.6,dich:0,n:"Senza dichiarazione al Registro il cliente paga il CA su tutto ma beneficia solo sul 40%: netto negativo. Per questo serve il Registro delle coperture."},
+    "6":{i:0.5,fa:0,fp:0,ppa:0.5,cop:0,dich:1,n:"Il PPA fisso ante-annuncio è esente come una copertura; un PPA firmato dopo pagherebbe."},
+    "7":{i:0.3,fa:0.3,fp:0.2,ppa:0.2,cop:0,dich:1,n:"Si applica la regola di ciascuna componente."},
+    "au":{i:1,fa:0,fp:0,ppa:0,cop:0,dich:1,n:"Il prezzo di tutela segue il PUN: beneficia e paga, senza esenzioni sociali, per non restringere la base e alzare il CA agli altri."},
+    "gc":{i:1,fa:0,fp:0,ppa:0,cop:0.3,dich:1,n:"Paga il CA a Terna in prima persona sui prelievi scoperti; i futures ante-annuncio dichiarati sono esenti."}
+  };
+  function read(id){var v=parseFloat($(id).value);return isNaN(v)?defaults[id]:v}
+  function calc(){
+    var pgas=read("pgas"),cap=read("cap"),eta=read("eta"),k=read("k"),gd=read("gd")/100,x=read("x")/100,d=read("d"),s=read("s")/100;
+    var delta=Math.max(0,(pgas-cap)/eta), dp=k*delta, g=gd*d, c=delta*g, e=d*(1-x), ca=e>0?c/e:0, net=dp-ca, xmax=1-gd/k;
+    $("oDelta").textContent=fmt(delta,1)+" €/MWh";
+    $("oDP").textContent=fmt(dp,1)+" €/MWh";
+    $("oCA").textContent=fmt(ca,1)+" €/MWh";
+    $("oXmax").textContent=(xmax>0?fmt(xmax*100,0):"0")+" %";
+    var v=$("verdict");
+    if(delta<=0){v.className="verdict ko";v.textContent="Il gas costa meno del tetto: nessun rimborso, nessun effetto.";}
+    else if(net>0){v.className="verdict ok";v.textContent="Conviene: ogni MWh esposto risparmia "+fmt(dp,1)+" e paga "+fmt(ca,1)+", netto +"+fmt(net,1)+" €/MWh. Costo orario da ripartire: "+fmt(c/1000,0)+" k€.";}
+    else{v.className="verdict ko";v.textContent="Non conviene: il CA ("+fmt(ca,1)+") supera il ribasso ("+fmt(dp,1)+"), netto "+fmt(net,1)+" €/MWh. Riduci la quota esente sotto "+fmt(Math.max(0,xmax)*100,0)+"%.";}
+    // chart
+    var pts=[];for(var m=0;m<=12;m++){var xt=x*Math.pow(1-s,m);var et=d*(1-xt);var cat=et>0?c/et:0;pts.push({m:m,ca:cat,net:dp-cat});}
+    draw(pts,dp);
+    // client
+    var cs=cases[$("tipo").value], cons=read("cons");
+    var qEx=cs.fa+cs.ppa+cs.cop*cs.dich, qPay=1-qEx, qBen=cs.i+cs.fp-cs.cop;
+    var eBen=cons*qBen*dp, ePay=cons*qPay*ca, eNet=eBen-ePay;
+    $("qBen").textContent=fmt(qBen*100,0)+" %";$("eBen").textContent=fmt(eBen,0);
+    $("qPay").textContent=fmt(qPay*100,0)+" %";$("ePay").textContent="−"+fmt(ePay,0);
+    $("eNet").innerHTML="<strong>"+(eNet<0?"−":"+")+fmt(Math.abs(eNet),0)+"</strong>";
+    $("eNet").style.color=eNet<0?"var(--bad)":"var(--good)";
+    $("tipoNote").textContent=cs.n;
+  }
+  function draw(pts,dp){
+    var W=760,H=300,L=56,R=20,T=20,B=40,w=W-L-R,h=H-T-B;
+    var all=pts.map(function(p){return p.ca}).concat(pts.map(function(p){return p.net}),[dp,0]);
+    var mn=Math.min.apply(null,all),mx=Math.max.apply(null,all);var pad=(mx-mn)*0.1||5;mn-=pad;mx+=pad;
+    var X=function(m){return L+w*m/12},Y=function(v){return T+h*(1-(v-mn)/(mx-mn))};
+    var s='<line x1="'+L+'" y1="'+Y(0)+'" x2="'+(W-R)+'" y2="'+Y(0)+'" stroke="currentColor" stroke-opacity=".35"/>';
+    for(var i=0;i<=4;i++){var v=mn+(mx-mn)*i/4;s+='<text x="'+(L-6)+'" y="'+(Y(v)+4)+'" font-size="11" text-anchor="end" fill="currentColor">'+fmt(v,0)+'</text>';}
+    for(var m=0;m<=12;m+=2){s+='<text x="'+X(m)+'" y="'+(H-14)+'" font-size="11" text-anchor="middle" fill="currentColor">mese '+m+'</text>';}
+    var path=function(key,col){var d="";pts.forEach(function(p,i){d+=(i?"L":"M")+X(p.m)+" "+Y(p[key])+" "});return '<path d="'+d+'" fill="none" stroke="'+col+'" stroke-width="3"/>'};
+    s+='<line x1="'+L+'" y1="'+Y(dp)+'" x2="'+(W-R)+'" y2="'+Y(dp)+'" stroke="#1E6B3A" stroke-dasharray="6 4"/>';
+    s+=path("ca","#9C6500")+path("net","#1F4E79");
+    s+='<text x="'+(W-R)+'" y="'+(Y(dp)-6)+'" font-size="12" text-anchor="end" fill="#1E6B3A">ΔP (ribasso)</text>';
+    s+='<text x="'+(L+8)+'" y="'+(Y(pts[0].ca)-8)+'" font-size="12" fill="#9C6500">CA pagato</text>';
+    s+='<text x="'+(L+8)+'" y="'+(Y(pts[0].net)+16)+'" font-size="12" fill="#1F4E79">netto per MWh esposto</text>';
+    s+='<text x="'+(L-40)+'" y="'+(T-6)+'" font-size="11" fill="currentColor">€/MWh</text>';
+    $("chart").innerHTML=s;
+  }
+  ids.forEach(function(id){
+    $(id).addEventListener("input",function(){var r=document.querySelector('input[type=range][data-for="'+id+'"]');if(r)r.value=$(id).value;calc();});
+  });
+  Array.prototype.forEach.call(document.querySelectorAll("input[type=range]"),function(r){r.addEventListener("input",function(){$(r.getAttribute("data-for")).value=r.value;calc();});});
+  $("tipo").addEventListener("change",calc);$("cons").addEventListener("input",calc);
+  $("reset").addEventListener("click",function(){ids.forEach(function(id){$(id).value=defaults[id];var r=document.querySelector('input[type=range][data-for="'+id+'"]');if(r)r.value=defaults[id];});$("tipo").value="1";$("cons").value=100;calc();});
+  calc();
+})();
+</script>
+</body>
+</html>
