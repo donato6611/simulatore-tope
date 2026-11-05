@@ -79,6 +79,66 @@ button{font:inherit;font-size:14px;padding:8px 12px;border-radius:8px;border:1px
 .sw{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-1px;margin-right:6px}
 .legend .badge{position:static;margin-right:6px;vertical-align:middle}
 button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+
+#report{display:none}
+.pdfbtn{font:inherit;font-weight:600;padding:10px 16px;border-radius:10px;border:1px solid var(--blue);background:var(--blue);color:#fff;cursor:pointer}
+.pdfbtn:hover{filter:brightness(1.08)}
+.pdfbtn:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .pdfbtn{color:#121417}}
+:root[data-theme="dark"] .pdfbtn{color:#121417}
+@media print{
+  @page{size:A4;margin:13mm 13mm 16mm 13mm;
+    @bottom-left{content:"Simulatore tope italiano · mera ipotesi di lavoro, senza valore ufficiale";font-family:Arial,Helvetica,sans-serif;font-size:7.5pt;color:#6B6B6B}
+    @bottom-right{content:"Pagina " counter(page) " di " counter(pages);font-family:Arial,Helvetica,sans-serif;font-size:7.5pt;color:#6B6B6B}}
+  :root,:root:not([data-theme="light"]),:root[data-theme="dark"]{color-scheme:light;--bg:#FFFFFF;--ink:#141413;--muted:#444444;--line:#BBBBBB;--blue:#1F4E79;--blue-soft:#E8F0F8;--amber:#9C6500;--amber-soft:#FFF4DC;--bad:#B00020;--bad-soft:#FDE7E9;--good:#1E6B3A;--good-soft:#E3F3E8;padding:0}
+  html,body{background:#FFFFFF!important;color:#1D1D1B!important}
+  body>*:not(#report){display:none!important}
+  #report{display:block;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:9.4pt;line-height:1.42;color:#1D1D1B;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  #report *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  #report .rh svg{display:block;width:100%;height:auto;margin:0 0 7pt}
+  #report .box{border:0.6pt solid #E8D9B5;border-left:3pt solid #C9861A;background:#FFF8EA;border-radius:4pt;padding:4pt 8pt;margin:0 0 8pt;font-size:8.6pt;color:#3A3A38}
+  #report .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:6pt;margin:0 0 7pt}
+  #report .kpi{border:0.6pt solid #D6DEE8;border-radius:6pt;background:#F5F8FB;padding:6pt 8pt 5pt}
+  #report .kpi .v{font-size:15pt;font-weight:700;color:#1F4E79;line-height:1.1;white-space:nowrap}
+  #report .kpi .u{font-size:8pt;font-weight:600;color:#1F4E79;margin-left:2pt}
+  #report .kpi .l{font-size:7.6pt;color:#555;margin-top:3pt;line-height:1.25}
+  #report .kpi.amb{background:#FFF8EA;border-color:#EBD9AE}#report .kpi.amb .v,#report .kpi.amb .u{color:#9C6500}
+  #report .kpi.pos{background:#EAF6EE;border-color:#BFE0CB}#report .kpi.pos .v,#report .kpi.pos .u{color:#1E6B3A}
+  #report .kpi.neg{background:#FDECEE;border-color:#F2C0C7}#report .kpi.neg .v,#report .kpi.neg .u{color:#B00020}
+  #report .verdict{border-radius:6pt;padding:6pt 10pt;margin:0 0 4pt;font-weight:700;font-size:9.6pt;background:#EAF6EE;color:#1E6B3A;border:0.6pt solid #BFE0CB}
+  #report .verdict.ko{background:#FDECEE;color:#B00020;border-color:#F2C0C7}
+  #report figure{margin:6pt 0 2pt;break-inside:avoid;page-break-inside:avoid}
+  #report figure svg{display:block;width:100%;height:auto}
+  #report figcaption{font-size:7.8pt;color:#666;margin-top:3pt}
+  #report h2{display:flex;align-items:center;gap:7pt;font-size:12.6pt;color:#0E2A47;margin:13pt 0 6pt;padding-bottom:3pt;border-bottom:1.2pt solid #1F4E79;break-after:avoid;page-break-after:avoid}
+  #report h2 .n{flex:0 0 auto;display:inline-block;width:17pt;height:17pt;line-height:17pt;border-radius:50%;background:#1F4E79;color:#FFFFFF;font-size:9pt;text-align:center}
+  #report h2.pb{break-before:page;page-break-before:always}
+  #report p{margin:2pt 0 4pt}
+  #report table{width:100%;border-collapse:separate;border-spacing:0;margin:3pt 0 6pt;border:0.6pt solid #C9D3DE;border-radius:5pt;overflow:hidden;font-size:8.4pt;line-height:1.32}
+  #report tr{break-inside:avoid;page-break-inside:avoid}
+  #report table.keep{break-inside:avoid;page-break-inside:avoid}
+  #report table.traj{width:74%;margin-left:auto;margin-right:auto}
+  #report .keep{break-inside:avoid;page-break-inside:avoid}
+  #report th,#report td{padding:2.2pt 6pt;text-align:left;vertical-align:top;border-bottom:0.5pt solid #E1E7EE}
+  #report thead th{background:#1F4E79;color:#FFFFFF;font-weight:600;font-size:8.2pt;border-bottom:none}
+  #report table.par td:nth-child(1){width:36%}#report table.par td:nth-child(2){width:15%}
+  #report tbody tr:nth-child(even) td{background:#F5F8FB}
+  #report tbody tr:last-child td{border-bottom:none}
+  #report td.pn{font-weight:600;color:#0E2A47}
+  #report .num{text-align:right;white-space:nowrap}
+  #report td.mod{color:#9C6500;font-weight:700}
+  #report .stp{break-inside:avoid;page-break-inside:avoid;margin:2pt 0 8pt;padding-left:9pt;border-left:1.2pt solid #D6DEE8}
+  #report .stp-h{font-weight:700;font-size:10pt;color:#0E2A47;margin:0 0 3pt}
+  #report .pill{display:inline-block;background:#E8F0F8;color:#1F4E79;border:0.6pt solid #C9D9EA;border-radius:9pt;padding:0 6pt;margin-right:5pt;font-size:8pt;font-weight:700}
+  #report .formula{font-family:"SFMono-Regular",Menlo,Consolas,"Liberation Mono","Courier New",monospace;font-size:8.6pt;line-height:1.5;background:#FBF7EE;border:0.6pt solid #EFE3C8;border-left:2.5pt solid #C9861A;border-radius:4pt;padding:4pt 7pt;margin:2pt 0 4pt;white-space:pre-wrap}
+  #report .ok{color:#1E6B3A;font-weight:700}
+  #report .ko{color:#B00020;font-weight:700}
+  #report .chart{border:0.6pt solid #D6DEE8;border-radius:6pt;padding:4pt 6pt 2pt;margin:4pt 0 6pt;break-inside:avoid;page-break-inside:avoid}
+  #report .chart svg{width:100%;height:auto;color:#1D1D1B}
+  #report .two{display:grid;grid-template-columns:1fr 1fr;gap:8pt;align-items:start}
+  #report .small{font-size:7.9pt;color:#444;line-height:1.38}
+  #report .end{margin-top:10pt;padding-top:5pt;border-top:0.6pt solid #C9D3DE}
+}
 </style>
 </head>
 <body>
@@ -191,6 +251,10 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 </table></div>
 <p class="note" id="tipoNote"></p>
 
+<h2 id="report-pdf">Report dei calcoli</h2>
+<p class="note">Il report riporta i parametri inseriti, tutti i passaggi del calcolo con i valori sostituiti e i relativi commenti, la traiettoria nei 12 mesi e il calcolo per il contratto scelto. Si apre la finestra di stampa del browser: scegli «Salva come PDF».</p>
+<button id="pdfBtn" type="button" class="pdfbtn">Scarica il report dei calcoli in PDF</button>
+
 <footer>
 <strong>Avvertenza.</strong> Mera ipotesi di lavoro, elaborata a mero titolo esplorativo, senza valore ufficiale: non è una proposta né una previsione. Valori indicativi, risultati puramente illustrativi.<br>Ipotesi: tetto 59 €/MWh per 18 mesi (accordo Italia-UE, ottobre 2026); PSV ≈ 100 €/MWh a fine ottobre 2026; volumi in borsa ≈ 286 TWh/anno; gas ≈ 50% della generazione netta 2026 (memoria ARERA 360/2026); k ≈ 0,70: quota dell’energia il cui prezzo segue il gas, direttamente o tramite il costo opportunità (stima su dati GME, novembre 2025 - ottobre 2026); gli acquisti su MGP sono al prezzo zonale e il PUN Index GME è l’indice dei contratti; il CA resta fuori dal PUN Index e il venditore lo ribalta allo stesso valore, come voce separata e solo ai clienti non esenti, sotto verifica ARERA, perché il quadro temporaneo UE sugli aiuti di Stato vuole i nuovi costi in bolletta solo a carico di chi beneficia; esenti solo fissi, coperture, PPA, derivati e quota Energy Release 2.0 stipulati prima dell’annuncio e rimasti invariati, più pompaggi e ausiliari; rimborso solo sull’energia a gas venduta sul mercato, anche tramite trader o ritiro dedicato GSE, non sull’autoconsumo; sulla produzione a gas venduta in MGP e coperta prima dell’annuncio, trattenuta fissa pari al calo di prezzo stimato (ΔP) per il volume coperto. Valori indicativi, da aggiornare con i dati Terna sulla produzione a gas.
 <div class="disclaimer" style="margin-top:10px"><strong>Esclusione di responsabilità.</strong> Il simulatore e i suoi contenuti hanno finalità esclusivamente divulgative ed esplorative. Non costituiscono consulenza legale, regolatoria, finanziaria o di investimento, né proposta, previsione o raccomandazione, e non esprimono la posizione di alcun ente, società o istituzione. Parametri e risultati sono stime semplificate e indicative, che possono contenere errori e non tenere conto dell’evoluzione normativa e di mercato. Non è fornita alcuna garanzia, espressa o implicita, sulla loro accuratezza, completezza o attualità, e si declina, nei limiti massimi consentiti dalla legge, ogni responsabilità per danni diretti o indiretti derivanti dall’uso del simulatore o da decisioni prese sulla base dei suoi risultati, che restano a esclusivo rischio di chi li utilizza. I calcoli avvengono interamente nel browser: i valori inseriti non vengono inviati né salvati.</div>
@@ -199,12 +263,14 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 </footer>
 </section>
 </main>
+<section id="report" aria-hidden="true"></section>
 <script>
 (function(){
   var ids=["pgas","cap","eta","k","gd","h","x","xp","d","s"];
   var defaults={pgas:100,cap:59,eta:0.55,k:0.70,gd:42,h:30,x:30,xp:15,d:32650,s:10};
   var $=function(id){return document.getElementById(id)};
   var fmt=function(v,dec){return (Math.round(v*Math.pow(10,dec))/Math.pow(10,dec)).toLocaleString("it-IT",{minimumFractionDigits:dec,maximumFractionDigits:dec})};
+  var last=null;
   var cases={
     "1":{i:1,fa:0,fp:0,ppa:0,cop:0,dich:1,n:"Beneficia su tutto e paga il CA su tutto: il caso base."},
     "2a":{i:0,fa:1,fp:0,ppa:0,cop:0,dich:1,n:"Nessun beneficio e nessun CA finché il contratto resta invariato: netto zero."},
@@ -247,6 +313,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
     $("eNet").innerHTML="<strong>"+(eNet<0?"−":"+")+fmt(Math.abs(eNet),0)+"</strong>";
     $("eNet").style.color=eNet<0?"var(--bad)":"var(--good)";
     $("tipoNote").textContent=cs.n;
+    last={pgas:pgas,cap:cap,eta:eta,k:k,gd:gd,hh:hh,x:x,xp:xp,d:d,s:s,delta:delta,dp:dp,g:g,c:c,e:e,ca:ca,net:net,xmax:xmax,pts:pts,cs:cs,cons:cons,qEx:qEx,qPay:qPay,qBen:qBen,eBen:eBen,ePay:ePay,eNet:eNet};
   }
   function draw(pts,dp){
     if(!pts.every(function(p){return isFinite(p.ca)&&isFinite(p.net)})||!isFinite(dp)){$("chart").innerHTML="";return;}
@@ -279,6 +346,129 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
       st.getAttribute("data-hl").split(",").forEach(function(id){var e=$(id);if(!e)return;e.classList.remove("hl");void e.offsetWidth;e.classList.add("hl");});}
     st.addEventListener("click",go);st.addEventListener("keydown",function(ev){if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();go();}});
   });
+
+  function esc(t){return String(t).replace(/[&<>"]/g,function(ch){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[ch];});}
+  function sg(v,dec){return (v<0?"−":"+")+fmt(Math.abs(v),dec);}
+  function headerSvg(cap,data){
+    return '<svg viewBox="0 0 1200 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Report dei calcoli">'+
+    '<defs><linearGradient id="rg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1F4E79"/><stop offset="1" stop-color="#0E2A47"/></linearGradient>'+
+    '<linearGradient id="rg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8FB8E6" stop-opacity=".55"/><stop offset="1" stop-color="#8FB8E6" stop-opacity="0"/></linearGradient></defs>'+
+    '<rect width="1200" height="250" rx="16" fill="url(#rg1)"/>'+
+    '<g opacity=".13" stroke="#FFFFFF"><path d="M620 62H1170M620 124H1170M620 186H1170"/></g>'+
+    '<path d="M640 118 L720 82 L800 102 L880 54 L960 74 L1040 46 L1120 72 L1160 60" fill="none" stroke="#FFFFFF" stroke-opacity=".5" stroke-width="3.5" stroke-dasharray="9 7"/>'+
+    '<path d="M640 200 L720 172 L800 186 L880 154 L960 164 L1040 150 L1120 170 L1160 160 L1160 250 L640 250Z" fill="url(#rg2)"/>'+
+    '<path d="M640 200 L720 172 L800 186 L880 154 L960 164 L1040 150 L1120 170 L1160 160" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linejoin="round"/>'+
+    '<line x1="640" y1="140" x2="1160" y2="140" stroke="#F0C06A" stroke-width="3.5" stroke-dasharray="12 9"/>'+
+    '<rect x="652" y="104" width="236" height="27" rx="6" fill="#F0C06A"/><text x="664" y="123" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" fill="#141413">tetto gas '+fmt(cap,0)+' €/MWh</text>'+
+    '<text x="1160" y="36" text-anchor="end" font-family="Arial, Helvetica, sans-serif" font-size="14" fill="#FFFFFF" fill-opacity=".75">prezzo elettrico senza tetto</text>'+
+    '<text x="1160" y="232" text-anchor="end" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="700" fill="#FFFFFF">prezzo elettrico con tetto</text>'+
+    '<text x="46" y="92" font-family="Arial, Helvetica, sans-serif" font-size="48" font-weight="700" fill="#FFFFFF">Report dei calcoli</text>'+
+    '<text x="48" y="134" font-family="Arial, Helvetica, sans-serif" font-size="23" fill="#CFE0F3">Simulatore tope italiano</text>'+
+    '<text x="48" y="168" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" fill="#F0C06A">Mera ipotesi di lavoro, a mero titolo esplorativo</text>'+
+    '<text x="48" y="216" font-family="Arial, Helvetica, sans-serif" font-size="15" fill="#FFFFFF" fill-opacity=".78">Generato il '+esc(data)+'</text>'+
+    '</svg>';
+  }
+  function flowSvg(L){
+    var W=1200,H=168,n=5,gap=10,w=(W-gap*(n-1))/n,notch=20;
+    var items=[
+      {t:"Gas al tetto",v:"Δ = "+fmt(L.delta,1),u:"€/MWh",l:"rimborso del GSE per MWh elettrico",f:"#FBE6DA",s:"#D9A88A",c:"#8A3B12"},
+      {t:"Ribasso",v:"ΔP = "+fmt(L.dp,1),u:"€/MWh",l:"calo medio del prezzo di borsa",f:"#E2EFDA",s:"#A9CB98",c:"#2E6B1F"},
+      {t:"Costo",v:"C = "+fmt(L.c/1000,0),u:"k€/h",l:"al netto della trattenuta",f:"#FBE6DA",s:"#D9A88A",c:"#8A3B12"},
+      {t:"Chi paga",v:"CA = "+fmt(L.ca,1),u:"€/MWh",l:"solo sull’energia non esente",f:"#FFF1D6",s:"#E1C27E",c:"#7A5200"},
+      {t:"Saldo",v:sg(L.net,1),u:"€/MWh",l:"netto per MWh esposto",f:L.net>0?"#DFF2E6":"#FBE0E4",s:L.net>0?"#9CCFAF":"#E7A2AD",c:L.net>0?"#1E6B3A":"#B00020"}
+    ];
+    var o='<svg viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Il meccanismo in cinque passi">';
+    items.forEach(function(it,i){
+      var x=i*(w+gap), x2=x+w, pts=(i===0?(x+','+0+' '):(x+','+0+' '))+(x2-notch)+',0 '+x2+','+(H/2)+' '+(x2-notch)+','+H+' '+x+','+H+(i===0?'':' '+(x+notch)+','+(H/2));
+      if(i===n-1){pts=x+',0 '+x2+',0 '+x2+','+H+' '+x+','+H+' '+(x+notch)+','+(H/2);}
+      o+='<polygon points="'+pts+'" fill="'+it.f+'" stroke="'+it.s+'" stroke-width="2"/>';
+      var cx=x+(i===0?16:notch+14);
+      o+='<circle cx="'+(cx+15)+'" cy="34" r="15" fill="'+it.c+'"/><text x="'+(cx+15)+'" y="40" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" fill="#FFFFFF">'+(i+1)+'</text>';
+      o+='<text x="'+(cx+38)+'" y="40" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="700" fill="'+it.c+'">'+esc(it.t)+'</text>';
+      o+='<text x="'+cx+'" y="90" font-family="Arial, Helvetica, sans-serif" font-size="25" font-weight="700" fill="#1D1D1B">'+esc(it.v)+'<tspan font-size="15" font-weight="600" fill="#555555"> '+it.u+'</tspan></text>';
+      var words=it.l.split(" "),line="",lines=[];words.forEach(function(wd){if((line+" "+wd).trim().length>24){lines.push(line.trim());line=wd;}else{line+=" "+wd;}});if(line.trim())lines.push(line.trim());
+      lines.slice(0,2).forEach(function(ln,k){o+='<text x="'+cx+'" y="'+(122+k*19)+'" font-family="Arial, Helvetica, sans-serif" font-size="15" fill="#4A4A4A">'+esc(ln)+'</text>';});
+    });
+    return o+'</svg>';
+  }
+  function buildReport(){
+    calc();
+    var L=last; if(!L) return;
+    var tipoTxt=$("tipo").options[$("tipo").selectedIndex].text;
+    var now=new Date();
+    var data=now.toLocaleDateString("it-IT",{day:"numeric",month:"long",year:"numeric"})+", ore "+now.toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit"});
+    var isMod=function(id,val){return Math.abs(val-defaults[id])>1e-9;};
+    var pDef=function(id,val,txt){return isMod(id,val)?" Valore predefinito: "+txt+".":"";};
+    var twh=L.d*8760/1e6;
+    var vtxt=$("verdict").textContent;
+    var h=[];
+    h.push('<div class="rh">'+headerSvg(L.cap,data)+'</div>');
+    h.push('<div class="box"><strong>Mera ipotesi di lavoro</strong>, elaborata a mero titolo esplorativo, senza valore ufficiale: non è una proposta né una previsione. Valori indicativi, risultati puramente illustrativi.</div>');
+    h.push('<div class="kpis">'+
+      '<div class="kpi"><div class="v">'+fmt(L.delta,1)+'<span class="u">€/MWh</span></div><div class="l">Δ: rimborso alle centrali per MWh elettrico</div></div>'+
+      '<div class="kpi"><div class="v">'+fmt(L.dp,1)+'<span class="u">€/MWh</span></div><div class="l">ΔP: calo atteso del prezzo di borsa e del PUN Index</div></div>'+
+      '<div class="kpi amb"><div class="v">'+fmt(L.ca,1)+'<span class="u">€/MWh</span></div><div class="l">CA: corrispettivo su ogni MWh non esente</div></div>'+
+      '<div class="kpi '+(L.net>0?'pos':'neg')+'"><div class="v">'+sg(L.net,1)+'<span class="u">€/MWh</span></div><div class="l">Netto per MWh esposto al prezzo di mercato</div></div>'+
+      '</div>');
+    h.push('<div class="verdict'+(L.net>0?'':' ko')+'">'+esc(vtxt)+'</div>');
+    h.push('<figure>'+flowSvg(L)+'<figcaption>Il meccanismo in cinque passi, con i valori del calcolo. Quota esente massima perché i clienti esposti ci guadagnino: '+(L.xmax>0?fmt(L.xmax*100,0)+'%':'nessuna')+'.</figcaption></figure>');
+    h.push('<h2><span class="n">1</span>Parametri inseriti</h2><table class="par"><thead><tr><th>Parametro</th><th class="num">Valore</th><th>Commento</th></tr></thead><tbody>');
+    var row=function(id,val,name,shown,comm,deftxt){return '<tr><td class="pn">'+name+'</td><td class="num'+(isMod(id,val)?' mod':'')+'">'+shown+'</td><td>'+comm+pDef(id,val,deftxt)+'</td></tr>';};
+    h.push(row("pgas",L.pgas,"Prezzo del gas PSV",fmt(L.pgas,1)+" €/MWh","Prezzo del gas a pronti, in €/MWh termici.","100"));
+    h.push(row("cap",L.cap,"Tetto convenzionale",fmt(L.cap,1)+" €/MWh","Prezzo del gas al quale le centrali offrono in borsa.","59"));
+    h.push(row("eta",L.eta,"Rendimento di riferimento η",fmt(L.eta,2),"MWh elettrici prodotti con un MWh di gas.","0,55"));
+    h.push(row("k",L.k,"Quota di energia il cui prezzo segue il gas k",fmt(L.k,2),"Stima su dati GME: valore centrale 0,70, caso pessimistico 0,52.","0,70"));
+    h.push(row("gd",L.gd*100,"Peso del gas sulla domanda G/D",fmt(L.gd*100,0)+"%","Quota della domanda coperta da centrali a gas.","42%"));
+    h.push(row("h",L.hh*100,"Quota venduta in MGP già coperta prima dell’annuncio h",fmt(L.hh*100,0)+"%","Su questa quota si applica la trattenuta pari al calo di prezzo stimato.","30%"));
+    h.push(row("x",L.x*100,"Quota di energia esente all’avvio X",fmt(L.x*100,0)+"%","Fissi firmati prima dell’annuncio, Energy Release, PPA e coperture dei clienti.","30%"));
+    h.push(row("xp",L.xp*100,"Quota esente stabile nei 12 mesi X<sub>p</sub>",fmt(L.xp*100,0)+"%","Parte della quota esente che non scade nei 12 mesi.","15%"));
+    h.push(row("d",L.d,"Domanda ripartibile D",fmt(L.d,0)+" MWh/h","Circa "+fmt(twh,0)+" TWh/anno, al netto di pompaggi, accumuli e ausiliari.","32.650"));
+    h.push(row("s",L.s*100,"Uscita mensile dei fissi ante-annuncio s",fmt(L.s*100,0)+"%","Quota dei fissi che ogni mese scade o viene rinnovata.","10%"));
+    h.push('</tbody></table>');
+    h.push('<h2><span class="n">2</span>Passaggi del calcolo</h2>');
+    var step=function(n,title,formula,comm,extra){return '<div class="stp"><div class="stp-h"><span class="pill">Passo '+n+'</span>'+title+'</div><div class="formula">'+formula+'</div>'+(extra||'')+'<p>'+comm+'</p></div>';};
+    h.push(step(1,"Rimborso alle centrali a gas (Δ)","Δ = (PSV − tetto) / η = ("+fmt(L.pgas,1)+" − "+fmt(L.cap,1)+") / "+fmt(L.eta,2)+" = "+fmt(L.delta,2)+" €/MWh elettrico",
+      "Le centrali a gas offrono in borsa come se il gas costasse quanto il tetto; il GSE rimborsa la differenza sul gas effettivamente consumato per l’energia venduta sul mercato, non sull’autoconsumo."+(L.delta<=0?" Con questi valori il gas costa meno del tetto: nessun rimborso e nessun effetto sul prezzo.":"")));
+    h.push(step(2,"Calo atteso del prezzo di borsa e del PUN Index (ΔP)","ΔP = k × Δ = "+fmt(L.k,2)+" × "+fmt(L.delta,2)+" = "+fmt(L.dp,2)+" €/MWh",
+      "Il ribasso pieno si ha solo sull’energia il cui prezzo segue il gas, direttamente o tramite il costo opportunità di idroelettrico e accumuli: ΔP è il calo medio su tutta l’energia scambiata. Scendono anche i futures sul PUN Index."));
+    h.push(step(3,"Costo orario da ripartire (C)","G = G/D × D = "+fmt(L.gd,2)+" × "+fmt(L.d,0)+" = "+fmt(L.g,0)+" MWh/h\nC = Δ × G × (1 − k × h) = "+fmt(L.delta,2)+" × "+fmt(L.g,0)+" × (1 − "+fmt(L.k,2)+" × "+fmt(L.hh,2)+") = "+fmt(L.c,0)+" €/h",
+      "Il GSE rimborsa Δ su tutto il gas venduto. Sulla quota h, già venduta a prezzo fisso prima dell’annuncio, sottrae una trattenuta fissa pari a ΔP per il volume coperto: lì il calo di prezzo è già compensato dalla copertura. Essendo fissa, la trattenuta non toglie alla centrale l’incentivo a offrire al tetto."));
+    h.push(step(4,"Corrispettivo all’ingrosso (CA)","E = D × (1 − X) = "+fmt(L.d,0)+" × (1 − "+fmt(L.x,2)+") = "+fmt(L.e,0)+" MWh/h\nCA = C / E = "+fmt(L.c,0)+" / "+fmt(L.e,0)+" = "+fmt(L.ca,2)+" €/MWh",
+      "Il costo si ripartisce solo sull’energia non esente, cioè su chi beneficia del ribasso. Terna addebita il CA agli utenti del dispacciamento sull’energia prelevata e misurata non esente; il venditore lo ribalta in bolletta allo stesso valore, come voce separata, fuori dal PUN Index e solo ai clienti non esenti."));
+    h.push(step(5,"Test di convenienza","Netto per MWh esposto = ΔP − CA = "+fmt(L.dp,2)+" − "+fmt(L.ca,2)+" = "+sg(L.net,2)+" €/MWh\nX_max = 1 − (G/D) × (1 − k × h) / k = 1 − "+fmt(L.gd,2)+" × (1 − "+fmt(L.k,2)+" × "+fmt(L.hh,2)+") / "+fmt(L.k,2)+" = "+(L.xmax>0?fmt(L.xmax*100,1)+"%":"nessuna"),
+      "La misura conviene a chi è esposto al prezzo di mercato finché la quota esente resta sotto X_max.",
+      '<p class="'+(L.net>0?'ok':'ko')+'">'+esc(vtxt)+'</p>'));
+    h.push('<h2><span class="n">3</span>Traiettoria nei 12 mesi</h2>');
+    var svg=$("chart").innerHTML;
+    if(svg) h.push('<div class="chart"><svg viewBox="0 0 760 300" xmlns="http://www.w3.org/2000/svg">'+svg+'</svg></div>');
+    h.push('<div class="formula">X(m) = min(X, X_p) + max(0, X − X_p) × (1 − s)^m\nCA(m) = C / [D × (1 − X(m))]        netto(m) = ΔP − CA(m)</div>');
+    h.push('<p>I fissi firmati prima dell’annuncio scadono o si rinnovano ogni mese al tasso s; Energy Release (fino a fine 2027), PPA e coperture dei clienti restano esenti. La quota esente scende, la base che paga si allarga e il corrispettivo cala.</p>');
+    h.push('<table class="keep traj"><thead><tr><th class="num">Mese</th><th class="num">Quota esente</th><th class="num">CA (€/MWh)</th><th class="num">Netto per MWh esposto (€/MWh)</th></tr></thead><tbody>');
+    L.pts.forEach(function(p){var xt=Math.min(L.x,L.xp)+Math.max(0,L.x-L.xp)*Math.pow(1-L.s,p.m);h.push('<tr><td class="num">'+p.m+'</td><td class="num">'+fmt(xt*100,1)+'%</td><td class="num">'+fmt(p.ca,2)+'</td><td class="num">'+sg(p.net,2)+'</td></tr>');});
+    h.push('</tbody></table>');
+    h.push('<div class="keep"><h2><span class="n">4</span>Il contratto scelto</h2><p><strong>'+esc(tipoTxt)+'</strong>; consumo mensile '+fmt(L.cons,0)+' MWh.</p>');
+    h.push('<div class="kpis">'+
+      '<div class="kpi"><div class="v">'+fmt(L.qBen*100,0)+'<span class="u">%</span></div><div class="l">Energia con beneficio di prezzo</div></div>'+
+      '<div class="kpi amb"><div class="v">'+fmt(L.qPay*100,0)+'<span class="u">%</span></div><div class="l">Energia che paga il CA</div></div>'+
+      '<div class="kpi"><div class="v">'+fmt(L.qEx*100,0)+'<span class="u">%</span></div><div class="l">Energia esente</div></div>'+
+      '<div class="kpi '+(L.eNet>=0?'pos':'neg')+'"><div class="v">'+sg(L.eNet,0)+'<span class="u">€/mese</span></div><div class="l">Netto per il cliente</div></div>'+
+      '</div>');
+    h.push('<div class="formula">Beneficio = consumo × quota con beneficio × ΔP = '+fmt(L.cons,0)+' × '+fmt(L.qBen,2)+' × '+fmt(L.dp,2)+' = '+fmt(L.eBen,0)+' €/mese\nCA pagato = consumo × quota che paga × CA = '+fmt(L.cons,0)+' × '+fmt(L.qPay,2)+' × '+fmt(L.ca,2)+' = '+fmt(L.ePay,0)+' €/mese\nNetto = beneficio − CA pagato = '+sg(L.eNet,0)+' €/mese</div>');
+    h.push('<p>'+esc(L.cs.n)+'</p></div>');
+    h.push('<h2><span class="n">5</span>Avvertenze</h2>');
+    var foot=document.querySelector("footer");
+    var disc=foot?foot.querySelector(".disclaimer"):null, lic=foot?foot.querySelector(".lic"):null, hypTxt="";
+    if(foot){var tmp=foot.cloneNode(true);Array.prototype.forEach.call(tmp.querySelectorAll(".disclaimer,.lic,button,div"),function(n){n.remove();});hypTxt=tmp.textContent.replace(/\s+/g," ").trim();}
+    if(hypTxt) h.push('<p class="small">'+esc(hypTxt)+'</p>');
+    if(disc) h.push('<p class="small">'+esc(disc.textContent.replace(/\s+/g," ").trim())+'</p>');
+    if(lic) h.push('<p class="small end">'+esc(lic.textContent.replace(/\s+/g," ").trim())+' Testo della licenza: creativecommons.org/licenses/by-nc-nd/4.0/deed.it</p>');
+    $("report").innerHTML=h.join("");
+  }
+  var oldTitle=document.title;
+  function stamp(){var d=new Date();var p=function(n){return (n<10?"0":"")+n};return d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate());}
+  window.addEventListener("beforeprint",function(){buildReport();document.title="Report simulatore tope italiano "+stamp();});
+  window.addEventListener("afterprint",function(){document.title=oldTitle;});
+  $("pdfBtn").addEventListener("click",function(){buildReport();document.title="Report simulatore tope italiano "+stamp();window.print();setTimeout(function(){document.title=oldTitle;},1000);});
   calc();
 })();
 </script>
